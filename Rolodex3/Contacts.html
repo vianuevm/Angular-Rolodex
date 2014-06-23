@@ -1,0 +1,105 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml" ng-app="contactsApp">
+<head>
+    <link href="site.css" rel="stylesheet" />
+    <link href="hover.css" rel="stylesheet" media="all">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rolodex: All Contacts</title>
+</head>
+<body>
+    <div class="container" ng-controller="contactsController">
+        <h1 class="headStyle"> Rolodoge  <img class="spaceDoge" src="spaceDoge.jpg" width="250" height="155" /></h1>
+       
+        <div class="dropdownTop">
+            <h3>
+                Order By:
+                <select ng-model="sortOrder">
+                    <option value="lastName" selected>last (a-z)</option>
+                    <option value="-lastName">last (z-a)</option>
+                    <option value="firstName">first</option>
+                    <option value="-firstName">first (z-a)</option>
+                    <option value="zip">zip code</option>
+                </select>
+            </h3>
+        </div>
+        <div class="searchBar">
+        <h3>
+            <input type="text" ng-model="searchString" placeholder="Search for Doge!" />
+        </h3>
+    </div>
+        <ul>
+            <li class="listElements list-group-item-rounded" ng-repeat="contact in contacts | orderBy: sortOrder | filter: searchString">
+                <img ng-hide="contact.showDetails" || "!contact.editDetails" class="avatar" height="120" width=170 ng-src="{{contact.img}}" />
+                <div ng-hide="contact.editMode">
+                    <div class="row">
+
+                        <span class="col-sm-8 lead text-center">
+                            {{contact.lastName}}, {{contact.firstName}}
+                        </span>
+                    </div>
+                    <div class="row" ng-hide="contact.showDetails">
+                        <div class="col-sm-5 col-sm-offset-1">
+                            <div class="row">
+                                {{contact.address}}
+                            </div>
+                            <div class="row">
+                                {{contact.city}}, {{contact.state}}&nbsp;{{contact.zip}}
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="row">
+                                <span class="col-sm-2"><b>Home:</b></span>
+                                <span class="col-sm-7">{{contact.homePhone}}</span>
+                            </div>
+                            <div class="row">
+                                <span class="col-sm-2"><b>Work:</b></span>
+                                <span class="col-sm-7">{{contact.workPhone}}</span>
+                            </div>
+                            <div class="row">
+                                <span class="col-sm-2"><b>Cell:</b></span>
+                                <span class="col-sm-7">{{contact.cellPhone}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <button class="btn btn-default grow" ng-click="toggleShowDetails(contact)">
+                                <span ng-show="contact.showDetails">Show Details</span>
+                                <span ng-hide="contact.showDetails">Hide Details</span>
+                            </button>
+                            <div class="col-sm-3">
+                                <button class="btn btn-default grow" ng-click="toggleEditMode(contact)">
+                                    <span>Edit</span>
+                                </button>
+                            </div>
+                            <div class="deletebtn col-sm-3">
+                                <button class="btn btn-default " ng-click="deleteContact(contact)">
+                                    <span>Delete</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <editcontent ng-show="contact.editMode" contact="contact.editContact" cancel="cancel" save="toggleEditMode" args="contact">
+                </editcontent>
+            </li>
+        </ul>
+        <div class="addButtonDiv row">
+            <button class="btn addButton btn-large btn-default" ng-hide="addMode" ng-click="toggleAddMode()">
+                {{addText()}}
+            </button>
+        </div>
+        <br />
+        <editcontent ng-show="addMode" cancel="cancel" contact="newContact" save="toggleAddMode">
+        </editcontent>
+    </div>
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-resource.min.js"></script>
+    <script src="Scripts/underscore-min.js"></script>
+    <script src="App/app.js"></script>
+    <script src="App/Factory/ContactsDataService.js"></script>
+    <script src="App/Controllers/ContactsController.js"></script>
+    <script src="App/Models/Contacts.js"></script>
+    <script src="App/Components/components.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+﻿<div class="addButtonDiv ">
+    <button class="btn addButton btn-large btn-default" ng-click="save()" ng-disabled="nameForm.$invalid || addressForm.$invalid || phoneForm.$invalid">
+        Save
+    </button>
+    <button class="btn addButton btn-large btn-default" ng-click="cancel()">
+        Cancel
+    </button>
+    <br />
+    <br />
+    <div class="formStyle">
+        <form class="form-inline" name="nameForm">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="last">Last Name:</label>
+                        <input class="form-control" type="text" name="lastName" ng-model="contactToEdit.lastName" ng-required="true" />
+                        <div class="invalid" ng-show="nameForm.last.$dirty && nameForm.last.$invalid">
+                            <span class="invalid" ng-show="nameForm.last.$error.required">Last name is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="first">First Name:</label>
+                        <input class="form-control" type="text" name="firstName" ng-model="contactToEdit.firstName" ng-required="true" />
+                        <div class="invalid" ng-show="nameForm.first.$dirty && nameForm.first.$invalid">
+                            <span class="invalid" ng-show="nameForm.first.$error.required"> First name is required </span>
+                        </div>
+                    </div>
+                </div>
+        </form>
+    </div>
+    <br />
+    <div class="secondFormStyle">
+        <div class="row">
+            <div class="col-sm-6">
+                <form class="form" name="addressForm">
+                    <div class="row">
+                        <div class="col-sm-11">
+                            <label for="address">Address:</label>
+                            <input class="form-control" type="text" id="address" name="address" ng-model="contactToEdit.address" ng-required="true" />
+                            <div class="invalid" ng-show="addressForm.address.$dirty && addressForm.address.$invalid">
+                                <span class="invalid" ng-show="addressForm.address.$error.required"> Address name is required </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="sr-only" for="city">City:</label>
+                            <input class="form-control" name="city" type="text" ng-model="contactToEdit.city" ng-required="true" />
+                            <div class="invalid" ng-show="addressForm.city.$dirty && addressForm.city.$invalid">
+                                <span class="invalid" ng-show="addressForm.city.$error.required">City is required</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="state" class="sr-only">State:</label>
+                            <input class="form-control" name="state" type="text" ng-model="contactToEdit.state" ng-required="true" ng-pattern="/^[A-Z][A-Z]$/" />
+                            <span ng-show="addressForm.state.$error.pattern">State must be two capital letters</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="zip" class="sr-only">Zip</label>
+                            <input class="form-control" name="zip" type="text" ng-model="contactToEdit.zip" ng-required="true" ng-pattern="/^[0-9]{5}$/" />
+                            <span ng-show="addressForm.zip.$error.pattern">Zip code must be five digits</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-6">
+                <form class="form-inline" name="phoneForm">
+                    <div class="row">
+                        <label for="homePhone" class="col-sm-5">home phone:</label>
+                        <input class="form-control" name="homePhone" type="tel" ng-model="contactToEdit.homePhone" ng-required="true"
+                               ng-pattern="/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/" />
+                        <span ng-show="phoneForm.homePhone.$error.pattern">You're a dummy</span>
+                    </div>
+                    <div class="row">
+                        <label for="workPhone" class="col-sm-5">work phone:</label>
+                        <input class="form-control" name="workPhone" id="workPhone" type="tel" ng-model="contactToEdit.workPhone"
+                               ng-pattern="/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/" />
+                        <span ng-show="phoneForm.workPhone.$error.pattern">You're a dummy</span>
+
+                    </div>
+                    <div class="row">
+                        <label for="cellPhone" class="col-sm-5">cell phone:</label>
+                        <input class="form-control" name="cellPhone" type="tel" ng-model="contactToEdit.cellPhone" ng-pattern="/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/" />
+                        <span ng-show="phoneForm.cellPhone.$error.pattern">You're a dummy</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ContactsDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="State" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="Zip" Type="String" MaxLength="5" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="PhoneNumbers" Relationship="Self.FK_PhoneNumber_ToPerson" FromRole="Person" ToRole="PhoneNumber" />
+    <Property Name="img" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="PhoneNumber">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="personRef" Type="Int32" />
+    <Property Name="phoneTypeRef" Type="Int32" />
+    <Property Name="number" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Person" Relationship="Self.FK_PhoneNumber_ToPerson" FromRole="PhoneNumber" ToRole="Person" />
+    <NavigationProperty Name="PhoneNumberType" Relationship="Self.FK_PhoneNumber_ToPhoneType" FromRole="PhoneNumber" ToRole="PhoneNumberType" />
+  </EntityType>
+  <EntityType Name="PhoneNumberType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="PhoneNumbers" Relationship="Self.FK_PhoneNumber_ToPhoneType" FromRole="PhoneNumberType" ToRole="PhoneNumber" />
+  </EntityType>
+  <Association Name="FK_PhoneNumber_ToPerson">
+    <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+    <End Role="PhoneNumber" Type="Self.PhoneNumber" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PhoneNumber">
+        <PropertyRef Name="personRef" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhoneNumber_ToPhoneType">
+    <End Role="PhoneNumberType" Type="Self.PhoneNumberType" Multiplicity="0..1" />
+    <End Role="PhoneNumber" Type="Self.PhoneNumber" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneNumberType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PhoneNumber">
+        <PropertyRef Name="phoneTypeRef" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ContactsDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="People" EntityType="Self.Person" />
+    <EntitySet Name="PhoneNumbers" EntityType="Self.PhoneNumber" />
+    <EntitySet Name="PhoneNumberTypes" EntityType="Self.PhoneNumberType" />
+    <AssociationSet Name="FK_PhoneNumber_ToPerson" Association="Self.FK_PhoneNumber_ToPerson">
+      <End Role="Person" EntitySet="People" />
+      <End Role="PhoneNumber" EntitySet="PhoneNumbers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhoneNumber_ToPhoneType" Association="Self.FK_PhoneNumber_ToPhoneType">
+      <End Role="PhoneNumberType" EntitySet="PhoneNumberTypes" />
+      <End Role="PhoneNumber" EntitySet="PhoneNumbers" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
